@@ -1,0 +1,169 @@
+.status-btn-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.status-btn {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid;
+  justify-content: center;
+}
+
+/* Default (not in list) */
+.status-btn--default {
+  background: var(--bg-card);
+  border-color: var(--border-glass);
+  color: var(--text-secondary);
+}
+.status-btn--default:hover {
+  border-color: var(--border-orange);
+  color: var(--orange-bright);
+  background: var(--orange-muted);
+}
+
+/* Watching — blue */
+.status-btn--blue {
+  background: rgba(56,189,248,0.1);
+  border-color: rgba(56,189,248,0.3);
+  color: #38bdf8;
+}
+
+/* Completed — green */
+.status-btn--green {
+  background: rgba(34,197,94,0.1);
+  border-color: rgba(34,197,94,0.3);
+  color: #4ade80;
+}
+
+/* Plan to Watch — purple */
+.status-btn--purple {
+  background: rgba(167,139,250,0.1);
+  border-color: rgba(167,139,250,0.3);
+  color: #a78bfa;
+}
+
+/* Dropped — red */
+.status-btn--red {
+  background: rgba(239,68,68,0.1);
+  border-color: rgba(239,68,68,0.3);
+  color: #f87171;
+}
+
+.status-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status-btn__icon {
+  font-size: 0.8rem;
+}
+
+.status-btn__label {
+  flex: 1;
+  text-align: left;
+}
+
+.status-btn__chevron {
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+
+.status-btn__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin-s 0.7s linear infinite;
+}
+@keyframes spin-s {
+  to { transform: rotate(360deg); }
+}
+
+/* Backdrop */
+.status-btn__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+/* Dropdown */
+.status-btn__dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  list-style: none;
+  overflow: hidden;
+  z-index: 51;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+  animation: dropdown-in 0.15s ease;
+}
+
+@keyframes dropdown-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.status-btn__option {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  color: var(--text-secondary);
+}
+
+.status-btn__option:hover {
+  background: var(--bg-glass-hover);
+}
+
+.status-btn__option--active {
+  background: rgba(255,255,255,0.04);
+}
+
+.status-btn__option--blue   { --opt-color: #38bdf8; }
+.status-btn__option--green  { --opt-color: #4ade80; }
+.status-btn__option--purple { --opt-color: #a78bfa; }
+.status-btn__option--red    { --opt-color: #f87171; }
+
+.status-btn__option--blue:hover,
+.status-btn__option--blue.status-btn__option--active   { color: #38bdf8; }
+.status-btn__option--green:hover,
+.status-btn__option--green.status-btn__option--active  { color: #4ade80; }
+.status-btn__option--purple:hover,
+.status-btn__option--purple.status-btn__option--active { color: #a78bfa; }
+.status-btn__option--red:hover,
+.status-btn__option--red.status-btn__option--active    { color: #f87171; }
+
+.status-btn__option--remove {
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+.status-btn__option--remove:hover {
+  color: #f87171;
+}
+
+.status-btn__check {
+  margin-left: auto;
+  font-size: 0.7rem;
+  color: var(--orange-bright);
+}

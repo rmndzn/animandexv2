@@ -1,0 +1,205 @@
+.anime-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+}
+
+.anime-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 24px rgba(255, 107, 26, 0.12);
+  border-color: var(--border-orange);
+}
+
+/* Poster */
+.anime-card__poster-wrap {
+  position: relative;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  background: var(--bg-deep);
+}
+
+.anime-card__poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.anime-card:hover .anime-card__poster {
+  transform: scale(1.06);
+}
+
+.anime-card__poster-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 55%,
+    rgba(8, 8, 16, 0.7) 80%,
+    rgba(8, 8, 16, 0.95) 100%
+  );
+}
+
+/* Score badge */
+.anime-card__score {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.score--high {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.score--mid {
+  background: rgba(255, 107, 26, 0.2);
+  color: var(--orange-bright);
+  border: 1px solid rgba(255, 107, 26, 0.2);
+}
+
+.score--low {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+/* Fav button */
+.anime-card__fav {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(8, 8, 16, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-glass);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  opacity: 0;
+}
+
+.anime-card:hover .anime-card__fav {
+  opacity: 1;
+}
+
+.anime-card__fav--active {
+  opacity: 1 !important;
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.3);
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.anime-card__fav:hover {
+  transform: scale(1.15);
+  color: #f87171;
+}
+
+/* Hover info */
+.anime-card__hover-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.6rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all var(--transition-base);
+}
+
+.anime-card:hover .anime-card__hover-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.anime-card__episodes,
+.anime-card__studio-hover {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+}
+
+.anime-card__studio-hover {
+  color: var(--orange-bright);
+  font-size: 0.68rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Body */
+.anime-card__body {
+  padding: 0.8rem 0.9rem 0.9rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.anime-card__title {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.anime-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.anime-card__year {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.anime-card__genre {
+  font-size: 0.65rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 100px;
+  background: var(--orange-muted);
+  color: var(--orange-bright);
+  border: 1px solid var(--border-orange);
+  white-space: nowrap;
+}
