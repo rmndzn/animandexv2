@@ -94,7 +94,7 @@
 .status-btn__backdrop {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 150;
 }
 
 /* Dropdown */
@@ -108,7 +108,7 @@
   border-radius: var(--radius-md);
   list-style: none;
   overflow: hidden;
-  z-index: 51;
+  z-index: 151;
   box-shadow: 0 16px 40px rgba(0,0,0,0.6);
   animation: dropdown-in 0.15s ease;
 }

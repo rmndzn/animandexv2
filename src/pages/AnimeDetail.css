@@ -73,6 +73,8 @@
   gap: 0.75rem;
   position: sticky;
   top: calc(var(--nav-height) + 1.5rem);
+  z-index: 10;
+  isolation: isolate;
 }
 
 .detail__poster {
