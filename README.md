@@ -41,23 +41,6 @@ Dark charcoal background, orange accent colors, glassmorphic cards with soft blu
 - **Supabase** — PostgreSQL database + Auth (deploys on Vercel free tier)
 - **Jikan API** — Free anime data, no API key needed
 
-## Database
-
-Uses Supabase (PostgreSQL). The full schema is in `supabase/schema.sql`. Run it once in your Supabase project's SQL editor to set up all tables, policies, and triggers.
-
-## Deploying to Vercel
-
-1. Create a free project at [supabase.com](https://supabase.com)
-2. Run `supabase/schema.sql` in the Supabase SQL Editor
-3. Copy your project URL and anon key from **Project Settings → API**
-4. Push this repo to GitHub
-5. Import the repo in [vercel.com](https://vercel.com)
-6. Add these environment variables in Vercel:
-   ```
-   VITE_SUPABASE_URL=https://your-project-id.supabase.co
-   VITE_SUPABASE_ANON_KEY=your-anon-key
-   ```
-7. Deploy — done
 
 ## Data
 
