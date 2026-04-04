@@ -159,23 +159,6 @@ export default function AuthModal({ onClose }) {
                 Reach out to an admin or check back later to get access.
               </p>
 
-              {/* Divider */}
-              <div className="reg-box__divider">
-                <span>or</span>
-              </div>
-
-              {/* Contact hint */}
-              <p className="reg-box__hint">
-                Already have an account?{' '}
-                <button
-                  type="button"
-                  className="reg-box__hint-link"
-                  onClick={closeRegisterModal}
-                >
-                  Log in instead
-                </button>
-              </p>
-
               {/* OK button */}
               <button
                 className="reg-box__ok"
