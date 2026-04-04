@@ -2,36 +2,36 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import './AuthModal.css'
 
-export default function AuthModal({ onClose, defaultTab = 'login' }) {
-  const { login, register } = useAuth()
-  const [tab, setTab]         = useState(defaultTab)
+export default function AuthModal({ onClose }) {
+  const { login } = useAuth()
+
   const [loading, setLoading] = useState(false)
-  const [error, setError]     = useState('')
-  const [success, setSuccess] = useState('')
+  const [error, setError] = useState('')
+  const [showRegisterUnavailable, setShowRegisterUnavailable] = useState(false)
 
-  // Form fields
-  const [email, setEmail]       = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [username, setUsername] = useState('')
-  const [confirm, setConfirm]   = useState('')
 
-  // Close on Escape
+  // ESC key
   useEffect(() => {
-    const handler = (e) => { if (e.key === 'Escape') onClose() }
+    const handler = (e) => {
+      if (e.key === 'Escape') {
+        if (showRegisterUnavailable) {
+          setShowRegisterUnavailable(false)
+        } else {
+          onClose()
+        }
+      }
+    }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [onClose])
-
-  const reset = () => {
-    setError(''); setSuccess('')
-    setEmail(''); setPassword(''); setUsername(''); setConfirm('')
-  }
-
-  const switchTab = (t) => { setTab(t); reset() }
+  }, [onClose, showRegisterUnavailable])
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    setError(''); setLoading(true)
+    setError('')
+    setLoading(true)
+
     try {
       await login(email, password)
       onClose()
@@ -42,27 +42,11 @@ export default function AuthModal({ onClose, defaultTab = 'login' }) {
     }
   }
 
-  const handleRegister = async (e) => {
-    e.preventDefault()
-    setError('')
-    if (password !== confirm) { setError('Passwords do not match'); return }
-    if (username.length < 3) { setError('Username must be at least 3 characters'); return }
-    setLoading(true)
-    try {
-      await register(email, password, username)
-      setSuccess('Account created! Check your email to confirm, then log in.')
-      setTab('login')
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <div className="auth-modal" onClick={onClose}>
       <div className="auth-modal__box" onClick={e => e.stopPropagation()}>
-        {/* Header */}
+
+        {/* HEADER */}
         <div className="auth-modal__header">
           <div className="auth-modal__logo">
             <span className="auth-modal__logo-icon">◈</span>
@@ -71,93 +55,92 @@ export default function AuthModal({ onClose, defaultTab = 'login' }) {
           <button className="auth-modal__close" onClick={onClose}>✕</button>
         </div>
 
-        {/* Tabs */}
+        {/* TABS */}
         <div className="auth-modal__tabs">
-          <button
-            className={`auth-modal__tab ${tab === 'login' ? 'auth-modal__tab--active' : ''}`}
-            onClick={() => switchTab('login')}
-          >
+          <button className="auth-modal__tab auth-modal__tab--active">
             Login
           </button>
+
           <button
-            className={`auth-modal__tab ${tab === 'register' ? 'auth-modal__tab--active' : ''}`}
-            onClick={() => switchTab('register')}
+            className="auth-modal__tab auth-modal__tab--disabled"
+            onClick={() => setShowRegisterUnavailable(true)}
           >
             Register
           </button>
         </div>
 
-        {/* Alerts */}
-        {error   && <div className="auth-modal__alert auth-modal__alert--error">⚠ {error}</div>}
-        {success && <div className="auth-modal__alert auth-modal__alert--success">✓ {success}</div>}
-
-        {/* Login form */}
-        {tab === 'login' && (
-          <form className="auth-modal__form" onSubmit={handleLogin}>
-            <div className="auth-modal__field">
-              <label>Email</label>
-              <input
-                type="email" required placeholder="you@example.com"
-                value={email} onChange={e => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="auth-modal__field">
-              <label>Password</label>
-              <input
-                type="password" required placeholder="••••••••"
-                value={password} onChange={e => setPassword(e.target.value)}
-              />
-            </div>
-            <button className="auth-modal__submit" type="submit" disabled={loading}>
-              {loading ? <span className="auth-modal__spinner" /> : 'Login'}
-            </button>
-            <p className="auth-modal__switch">
-              Don't have an account?{' '}
-              <button type="button" onClick={() => switchTab('register')}>Register</button>
-            </p>
-          </form>
+        {/* ERROR */}
+        {error && (
+          <div className="auth-modal__alert auth-modal__alert--error">
+            ⚠ {error}
+          </div>
         )}
 
-        {/* Register form */}
-        {tab === 'register' && (
-          <form className="auth-modal__form" onSubmit={handleRegister}>
-            <div className="auth-modal__field">
-              <label>Username</label>
-              <input
-                type="text" required placeholder="YourUsername" minLength={3}
-                value={username} onChange={e => setUsername(e.target.value)}
-              />
-            </div>
-            <div className="auth-modal__field">
-              <label>Email</label>
-              <input
-                type="email" required placeholder="you@example.com"
-                value={email} onChange={e => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="auth-modal__field">
-              <label>Password</label>
-              <input
-                type="password" required placeholder="••••••••" minLength={6}
-                value={password} onChange={e => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="auth-modal__field">
-              <label>Confirm Password</label>
-              <input
-                type="password" required placeholder="••••••••"
-                value={confirm} onChange={e => setConfirm(e.target.value)}
-              />
-            </div>
-            <button className="auth-modal__submit" type="submit" disabled={loading}>
-              {loading ? <span className="auth-modal__spinner" /> : 'Create Account'}
+        {/* LOGIN FORM */}
+        <form className="auth-modal__form" onSubmit={handleLogin}>
+          <div className="auth-modal__field">
+            <label>Email</label>
+            <input
+              type="email"
+              required
+              placeholder="you@example.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="auth-modal__field">
+            <label>Password</label>
+            <input
+              type="password"
+              required
+              placeholder="••••••••"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button className="auth-modal__submit" type="submit" disabled={loading}>
+            {loading ? <span className="auth-modal__spinner" /> : 'Login'}
+          </button>
+
+          <p className="auth-modal__switch">
+            Don’t have an account?{' '}
+            <button
+              type="button"
+              onClick={() => setShowRegisterUnavailable(true)}
+            >
+              Register
             </button>
-            <p className="auth-modal__switch">
-              Already have an account?{' '}
-              <button type="button" onClick={() => switchTab('login')}>Login</button>
-            </p>
-          </form>
+          </p>
+        </form>
+
+        {/* REGISTER DISABLED MODAL */}
+        {showRegisterUnavailable && (
+          <div
+            className="auth-modal__inner-overlay"
+            onClick={() => setShowRegisterUnavailable(false)}
+          >
+            <div
+              className="auth-modal__inner-box"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3>Registration Unavailable</h3>
+              <p>
+                Account registration is currently disabled.
+                Please contact admin or try again later.
+              </p>
+
+              <button
+                className="auth-modal__submit"
+                onClick={() => setShowRegisterUnavailable(false)}
+              >
+                OK
+              </button>
+            </div>
+          </div>
         )}
+
       </div>
     </div>
   )
