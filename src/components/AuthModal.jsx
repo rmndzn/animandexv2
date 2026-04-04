@@ -8,16 +8,31 @@ export default function AuthModal({ onClose }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showRegisterUnavailable, setShowRegisterUnavailable] = useState(false)
+  const [innerVisible, setInnerVisible] = useState(false)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  // Trigger enter animation after mount
+  useEffect(() => {
+    if (showRegisterUnavailable) {
+      requestAnimationFrame(() => setInnerVisible(true))
+    } else {
+      setInnerVisible(false)
+    }
+  }, [showRegisterUnavailable])
+
+  const closeRegisterModal = () => {
+    setInnerVisible(false)
+    setTimeout(() => setShowRegisterUnavailable(false), 280)
+  }
 
   // ESC key
   useEffect(() => {
     const handler = (e) => {
       if (e.key === 'Escape') {
         if (showRegisterUnavailable) {
-          setShowRegisterUnavailable(false)
+          closeRegisterModal()
         } else {
           onClose()
         }
@@ -60,7 +75,6 @@ export default function AuthModal({ onClose }) {
           <button className="auth-modal__tab auth-modal__tab--active">
             Login
           </button>
-
           <button
             className="auth-modal__tab auth-modal__tab--disabled"
             onClick={() => setShowRegisterUnavailable(true)}
@@ -105,7 +119,7 @@ export default function AuthModal({ onClose }) {
           </button>
 
           <p className="auth-modal__switch">
-            Don’t have an account?{' '}
+            Don't have an account?{' '}
             <button
               type="button"
               onClick={() => setShowRegisterUnavailable(true)}
@@ -115,28 +129,63 @@ export default function AuthModal({ onClose }) {
           </p>
         </form>
 
-        {/* REGISTER DISABLED MODAL */}
+        {/* REGISTER UNAVAILABLE MODAL */}
         {showRegisterUnavailable && (
           <div
-            className="auth-modal__inner-overlay"
-            onClick={() => setShowRegisterUnavailable(false)}
+            className={`reg-overlay ${innerVisible ? 'reg-overlay--visible' : ''}`}
+            onClick={closeRegisterModal}
           >
             <div
-              className="auth-modal__inner-box"
-              onClick={(e) => e.stopPropagation()}
+              className={`reg-box ${innerVisible ? 'reg-box--visible' : ''}`}
+              onClick={e => e.stopPropagation()}
             >
-              <h3>Registration Unavailable</h3>
-              <p>
-                Account registration is currently disabled.
-                Please contact admin or try again later.
+              {/* Decorative top glow bar */}
+              <div className="reg-box__glow-bar" />
+
+              {/* Animated lock icon */}
+              <div className="reg-box__icon-wrap">
+                <div className="reg-box__icon-ring reg-box__icon-ring--outer" />
+                <div className="reg-box__icon-ring reg-box__icon-ring--inner" />
+                <span className="reg-box__icon">🔒</span>
+              </div>
+
+              {/* Badge */}
+              <span className="reg-box__badge">Access Restricted</span>
+
+              <h3 className="reg-box__title">Registration Unavailable</h3>
+
+              <p className="reg-box__desc">
+                New account creation is temporarily disabled.
+                Reach out to an admin or check back later to get access.
               </p>
 
+              {/* Divider */}
+              <div className="reg-box__divider">
+                <span>or</span>
+              </div>
+
+              {/* Contact hint */}
+              <p className="reg-box__hint">
+                Already have an account?{' '}
+                <button
+                  type="button"
+                  className="reg-box__hint-link"
+                  onClick={closeRegisterModal}
+                >
+                  Log in instead
+                </button>
+              </p>
+
+              {/* OK button */}
               <button
-                className="auth-modal__submit"
-                onClick={() => setShowRegisterUnavailable(false)}
+                className="reg-box__ok"
+                onClick={closeRegisterModal}
               >
-                OK
+                Got it
               </button>
+
+              {/* Shimmer line */}
+              <div className="reg-box__shimmer" />
             </div>
           </div>
         )}
